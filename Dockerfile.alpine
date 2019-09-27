@@ -1,0 +1,21 @@
+FROM alpine:3.10
+LABEL maintainer="Flyffies"
+
+ENV maintainer="Flyffies"
+ENV SLEEP_TIME="300"
+# In Seconds
+ENV TZ="Etc/UTC"
+
+RUN apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/testing/ getmail
+RUN addgroup -S getmail && adduser -S getmail -G getmail
+USER getmail
+RUN mkdir -p ~/.getmail/ && chmod 700 ~/.getmail
+RUN mkdir -p ~/maildir/cur && mkdir ~/maildir/new && mkdir ~/maildir/tmp
+
+ADD --chown=getmail:getmail check-dir.sh /home/getmail/check-dir.sh
+ADD --chown=getmail:getmail entrypoint.sh /home/getmail/entrypoint.sh
+
+VOLUME ["/home/getmail/.getmail/", "/home/getmail/maildir/"]
+
+WORKDIR /home/getmail/
+CMD ["sh", "./entrypoint.sh"]

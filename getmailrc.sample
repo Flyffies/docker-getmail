@@ -1,0 +1,15 @@
+[retriever]
+type = SimpleIMAPSSLRetriever
+server = <mail server address or domain>
+username = <username. can include @domain part>
+password = <password>
+port = <imap port>
+
+# Change these if you like
+[options]
+delete = false
+verbose = 1
+
+[destination]
+type = Maildir
+path = ~/maildir/
